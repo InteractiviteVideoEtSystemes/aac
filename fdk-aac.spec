@@ -28,12 +28,21 @@ echo Clean du repertoire $RPM_BUILD_ROOT
 [ "$RPM_BUILD_ROOT" != "/" ] && rm -rf "$RPM_BUILD_ROOT"
 
 %prep
+cd %_topdir
+cd ..
 ./autogen.sh
-./configure --prefix=/usr --libdir=%{_libdir} --shlibdir=%{_libdir} --enable-shared --disable-ffplay --disable-ffserver --enable-pic
+./configure --prefix=/usr --libdir=%{_libdir}  --enable-shared --enable-pic
+make clean
+
+%build
+cd %_topdir
+cd ..
 make
 
 %install
 echo "Install" $PWD
+cd %_topdir
+cd ..
 make DESTDIR=$RPM_BUILD_ROOT install
 
 %files

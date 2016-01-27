@@ -76,6 +76,7 @@ function create_rpm
 	exit 20
     fi
     git checkout master
+    git branch -d $VERSION
     clean
 }
 
