@@ -1,5 +1,5 @@
 Name:      fdk-aac
-Version:   %{version}
+Version:   %{_version}
 Release:   1.ives%{?dist}
 Summary:   AAC codec library
 Vendor:    Fraunhofer Institute
