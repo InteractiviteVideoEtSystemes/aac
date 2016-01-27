@@ -2,43 +2,13 @@
 
 #Nom du paquetage
 PROJET=fdk-aac
+VERSION=0.1.4
 #Repertoire temporaire utiliser pour preparer les packages
 TEMPDIR=/tmp
 
 function svn_export
 {
         svn export https://svn.ives.fr/svn-libs-dev/asterisk/libsmedia/${PROJET}
-}
-
-#Preparation du fichier spec de packaging rpm
-function prepare_spec
-{
-    #Architecture
-    SRVARCH=`uname -i`
-    #Check Fedora
-    rpm -q fedora-release > /dev/null
-    fcres=$?
-    #Check CentOS
-    rpm -q centos-release > /dev/null
-    cosres=$?
-    #Fedora Core Version
-    if [ ${fcres} -eq 0 ]
-       then
-       FCV=`rpm -q fedora-release | sed s/fedora-release-// | sed s/-.*//`
-       sed s/ives_distrib/ives.fc${FCV}/g ${PROJET}.spec.ives > ${PROJET}.spec.tmp
-       sed s/ives_archi/${SRVARCH}/g ${PROJET}.spec.tmp > ${PROJET}.spec
-       rm ${PROJET}.spec.tmp
-    #CentOS Version
-    elif [ ${cosres} -eq 0 ]
-       then
-       COSV=`rpm -q centos-release | sed s/centos-release-// | sed s/-.*//`
-       sed s/ives_distrib/ives.el${COSV}/g ${PROJET}.spec.ives > ${PROJET}.spec.tmp
-       sed s/ives_archi/${SRVARCH}/g ${PROJET}.spec.tmp > ${PROJET}.spec
-       rm ${PROJET}.spec.tmp
-    else
-       echo "Erreur: On n'a pas trouvé de distribution Fedora, ou CentOS !"
-       exit
-    fi
 }
 
 #Creation de l'environnement de packaging rpm
@@ -48,14 +18,18 @@ function create_rpm
     #Creation des macros rpmbuild
     rm ~/.rpmmacros
     touch ~/.rpmmacros
+    echo "%_version" $VERSION >> ~/.rpmmacros
     echo "%_topdir" $PWD"/rpmbuild" >> ~/.rpmmacros
     echo "%_tmppath %{_topdir}/TMP" >> ~/.rpmmacros
     echo "%_signature gpg" >> ~/.rpmmacros
     echo "%_gpg_name IVeSkey" >> ~/.rpmmacros
     echo "%_gpg_path" $PWD"/gnupg" >> ~/.rpmmacros
     echo "%vendor IVeS" >> ~/.rpmmacros
-    #Import de la clef gpg IVeS
-    svn export https://svn.ives.fr/svn-libs-dev/gnupg
+    if [[ -z $1 || $1 -ne nosign ]]
+    then
+        #Import de la clef gpg IVeS
+        svn export https://svn.ives.fr/svn-libs-dev/gnupg
+    fi
     mkdir -p rpmbuild
     mkdir -p rpmbuild/SOURCES
     mkdir -p rpmbuild/SPECS
@@ -71,13 +45,34 @@ function create_rpm
     cd ./rpmbuild/SPECS/
     cp ../../${PROJET}.spec ${PROJET}.spec
     cd ../../
-    #Cree le package
-    rpmbuild -bb --sign $PWD/rpmbuild/SPECS/${PROJET}.spec
-    if [[ $? -eq 0 ]]
-    then
-        echo "************************* fin du rpmbuild ****************************"
-        #Recuperation du rpm
-        mv -f $PWD/rpmbuild/RPMS/*/*.rpm $PWD/.
+    # we remove the tag locally
+    git tag -d $VERSION
+    # we recover latest tags
+    git fetch --tags
+	
+     #we create a branch from the tag
+     git checkout -b $VERSION $VERSION
+	
+     #we check if anything has not been commited
+     git status | grep nothing
+     if [ $? == 0 ]
+     then
+	if [[ -z $1 || $1 -ne nosign ]]
+	then
+    		rpmbuild -bb $PWD/rpmbuild/SPECS/${PROJET}.spec
+	else
+    		#Cree le package
+    		rpmbuild -bb --sign $PWD/rpmbuild/SPECS/${PROJET}.spec
+	fi
+    	if [[ $? -eq 0 ]]
+    	then
+        	echo "************************* fin du rpmbuild ****************************"
+        	#Recuperation du rpm
+        	mv -f $PWD/rpmbuild/RPMS/*/*.rpm $PWD/.
+	fi
+    else
+	echo "*** error during build - some source files are not commited ***"
+	exit 20
     fi
     clean
 }
