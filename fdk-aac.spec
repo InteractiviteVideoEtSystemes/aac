@@ -8,9 +8,7 @@ Vendor:    Fraunhofer Institute
 Group:     Library/Multimedia
 License:   AAC Patent Licensing 
 URL:       http://sourceforge.net/projects/opencore-amr/files/fdk-aac
-BuildArchitectures: ives_archi
 BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-Requires: 
 
 %description
 The Fraunhofer FDK AAC Codec Library for Android is a low resource implementation of AAC encoders and decoders available for Android on ARM, MIPS, and x86 processors
@@ -42,20 +40,16 @@ make DESTDIR=$RPM_BUILD_ROOT install
 %defattr(-,root,root,-)
 %{_libdir}/*.so
 %{_libdir}/*.so.*
-/usr/bin/*
 %{_libdir}/pkgconfig/
-/usr/share/ffmpeg/*.ffpreset
-/usr/share/doc/lame/
 /usr/share/man/man1/
-/usr/share/ffmpeg/ffprobe.xsd
 
 %files devel
 %defattr(-,root,root)
 %attr(0755,root,root) /usr/include/*/*.h
 %{_libdir}/*.a
-/usr/share/ffmpeg/examples/
+%{_libdir}/*.la
 
 %changelog
 * Mon Mar 17 2015 Emmanuel BUU <emmanuel.buu@ives.fr>
-- integration ffmpeg 2.2.14
+- AAC
 
