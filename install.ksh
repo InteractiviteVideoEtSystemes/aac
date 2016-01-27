@@ -78,6 +78,8 @@ function create_rpm
     fi
     git checkout master
     git branch -d $VERSION
+    git reset --hard
+    make clean
     clean
 }
 
