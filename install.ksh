@@ -28,7 +28,7 @@ function create_rpm
     if [[ -z $1 || $1 -ne nosign ]]
     then
         #Import de la clef gpg IVeS
-        svn export https://svn.ives.fr/svn-libs-dev/gnupg
+        svn export http://svn.ives.fr/svn-libs-dev/gnupg
     fi
     mkdir -p rpmbuild
     mkdir -p rpmbuild/SOURCES
