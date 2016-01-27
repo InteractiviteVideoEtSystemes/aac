@@ -24,7 +24,7 @@ function create_rpm
     echo "%_signature gpg" >> ~/.rpmmacros
     echo "%_gpg_name IVeSkey" >> ~/.rpmmacros
     echo "%_gpg_path" $PWD"/gnupg" >> ~/.rpmmacros
-    echo "%vendor IVeS" >> ~/.rpmmacros
+    echo "%vendor Fraunhoffer" >> ~/.rpmmacros
     if [[ -z $1 || $1 -ne nosign ]]
     then
         #Import de la clef gpg IVeS
@@ -75,6 +75,7 @@ function create_rpm
 	echo "*** error during build - some source files are not commited ***"
 	exit 20
     fi
+    git checkout master
     clean
 }
 
