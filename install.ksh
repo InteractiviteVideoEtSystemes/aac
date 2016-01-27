@@ -63,6 +63,7 @@ function create_rpm
     		rpmbuild -bb --sign $PWD/rpmbuild/SPECS/${PROJET}.spec
 	else
     		#Cree le package
+		echo nosign
     		rpmbuild -bb $PWD/rpmbuild/SPECS/${PROJET}.spec
 	fi
     	if [[ $? -eq 0 ]]
