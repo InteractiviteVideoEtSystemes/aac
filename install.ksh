@@ -2,7 +2,7 @@
 
 #Nom du paquetage
 PROJET=fdk-aac
-VERSION=0.1.4
+VERSION=0.4.2
 #Repertoire temporaire utiliser pour preparer les packages
 TEMPDIR=/tmp
 
@@ -59,11 +59,10 @@ function create_rpm
      then
 	if [[ -z $1 || $1 -ne nosign ]]
 	then
-		echo nosign
-    		rpmbuild -bb $PWD/rpmbuild/SPECS/${PROJET}.spec
+    		rpmbuild -bb --sign $PWD/rpmbuild/SPECS/${PROJET}.spec
 	else
     		#Cree le package
-    		rpmbuild -bb --sign $PWD/rpmbuild/SPECS/${PROJET}.spec
+    		rpmbuild -bb $PWD/rpmbuild/SPECS/${PROJET}.spec
 	fi
     	if [[ $? -eq 0 ]]
     	then
