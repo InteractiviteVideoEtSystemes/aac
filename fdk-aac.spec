@@ -2,7 +2,7 @@ Name:      fdk-aac
 Version:   %version
 #Ne pas enlever le .ives a la fin de la release !
 #Cela est utilise par les scripts de recherche de package.
-Release:   1.ives_distrib
+Release:   1.ives%{?dist}
 Summary:   AAC codec library
 Vendor:    Fraunhofer Institute
 Group:     Library/Multimedia
