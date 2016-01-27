@@ -46,9 +46,9 @@ function create_rpm
     cp ../../${PROJET}.spec ${PROJET}.spec
     cd ../../
     # we remove the tag locally
-    git tag -d $VERSION
+    # git tag -d $VERSION
     # we recover latest tags
-    git fetch --tags
+    # git fetch --tags
 	
      #we create a branch from the tag
      git checkout -b $VERSION $VERSION
@@ -90,8 +90,7 @@ case $1 in
   		clean ;;
   	"rpm")
   		echo "Creation du rpm"
-                prepare_spec
-  		create_rpm;;
+  		create_rpm $2;;
   	*)
   		echo "usage: install.ksh [options]" 
   		echo "options :"
