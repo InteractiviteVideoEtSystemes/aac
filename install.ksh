@@ -46,9 +46,10 @@ function create_rpm
     cp ../../${PROJET}.spec ${PROJET}.spec
     cd ../../
     # we remove the tag locally
-    # git tag -d $VERSION
+    git tag -d $VERSION
+    git branch -d $VERSION
     # we recover latest tags
-    # git fetch --tags
+    git fetch --tags
 	
      #we create a branch from the tag
      git checkout -b $VERSION $VERSION
