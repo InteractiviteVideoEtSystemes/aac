@@ -49,7 +49,6 @@ make DESTDIR=$RPM_BUILD_ROOT install
 %{_libdir}/*.so
 %{_libdir}/*.so.*
 %{_libdir}/pkgconfig/
-/usr/share/man/man1/
 
 %files devel
 %defattr(-,root,root)
