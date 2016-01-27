@@ -59,6 +59,7 @@ function create_rpm
      then
 	if [[ -z $1 || $1 -ne nosign ]]
 	then
+		echo nosign
     		rpmbuild -bb $PWD/rpmbuild/SPECS/${PROJET}.spec
 	else
     		#Cree le package
