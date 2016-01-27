@@ -3,6 +3,7 @@ config.log
 config.status
 libtool
 *.rpm
+.deps/
 fdk-aac.pc
 libAACdec/src/.deps/
 libAACdec/src/.dirstamp
