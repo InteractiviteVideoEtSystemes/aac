@@ -7,7 +7,7 @@ Group:     Library/Multimedia
 License:   AAC Patent Licensing 
 URL:       http://sourceforge.net/projects/opencore-amr/files/fdk-aac
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-
+BuildRequires: libtool
 %description
 The Fraunhofer FDK AAC Codec Library for Android is a low resource implementation of AAC encoders and decoders available for Android on ARM, MIPS, and x86 processors
 
